@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from operator import itemgetter
 
-class Board():
+class Board:
     def __init__(self, size=8, black_score=0, white_score=0):
         self.size = size
         self.board_intersections = np.zeros((size + 1, size + 1))
@@ -44,7 +44,7 @@ class Board():
         elif y == 0:
             array_row = self.size
         else:
-            array_row = int(y + (-(self.size) * ((self.size / 2) - (self.size - y)) / (self.size / 2)))
+            array_row = int(y + (-self.size * ((self.size / 2) - (self.size - y)) / (self.size / 2)))
         return array_row
 
     # Returns false if any point on board is still equal to 0 (for checking if there are any possible intersections left)
@@ -105,8 +105,7 @@ class Board():
         for point in connected:
             adjacent_points = self.get_adjacent_points(point[0], point[1])
             for adj_point in adjacent_points:
-                if adj_point not in connected and adj_point not in border and self.board_intersections[
-                    adj_point[0], adj_point[1]] != val_check:
+                if adj_point not in connected and adj_point not in border and self.board_intersections[adj_point[0], adj_point[1]] != val_check:
                     border.append(adj_point)
         return border
 
@@ -115,15 +114,11 @@ class Board():
     def place_stone(self, color, x_position, y_position):
         array_y = self.convert_plot_to_array_y(y_position)
         if x_position in range(self.size + 1) and array_y in range(self.size + 1):
-            if color == 'black' and [array_y, x_position] not in self.black_stones_array and [array_y,
-                                                                                              x_position] not in self.white_stones_array and [
-                array_y, x_position] not in self.red_spots_array:
+            if color == 'black' and [array_y, x_position] not in self.black_stones_array and [array_y, x_position] not in self.white_stones_array and [array_y, x_position] not in self.red_spots_array:
                 self.black_stones_array.append([array_y, x_position])
                 self.black_stones_plot.append([x_position, y_position])
                 self.board_intersections[array_y, x_position] = 1
-            elif color == 'white' and [array_y, x_position] not in self.black_stones_array and [array_y,
-                                                                                                x_position] not in self.white_stones_array and [
-                array_y, x_position] not in self.red_spots_array:
+            elif color == 'white' and [array_y, x_position] not in self.black_stones_array and [array_y, x_position] not in self.white_stones_array and [array_y, x_position] not in self.red_spots_array:
                 self.white_stones_array.append([array_y, x_position])
                 self.white_stones_plot.append([x_position, y_position])
                 self.board_intersections[array_y, x_position] = 2
@@ -147,7 +142,7 @@ class Board():
             return 'Invalid'
         adj_points = self.get_adjacent_points(array_y, x_position)
         points_to_check = []
-        # Creates lists of points to check if the stone adjacent to the placed stone is of the opposite color
+        # Create lists of points to check if the stone adjacent to the placed stone is of the opposite color
         for point in adj_points:
             if self.board_intersections[point[0], point[1]] == opp_val:
                 points_to_check.append(point)
